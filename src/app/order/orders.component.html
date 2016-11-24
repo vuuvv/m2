@@ -1,0 +1,57 @@
+<v-page>
+  <v-footer *ngIf="state=='unpay'">
+    <div class="ordercb">
+      <p>
+        <input type="checkbox" id="check-all" (change)="selectAll($event)">
+        <label for="check-all"></label>
+      </p>
+    </div>
+    <div class="check-all-text">
+      全选({{ totalCount() }})
+    </div>
+    <div class="total-price">
+      <div class="total-price-cont">
+        <p>
+          <span>合计:</span><span class="price">{{ totalPrice() | yuan}}</span>
+        </p>
+        <p>
+          <span>含运费:</span><span>{{ totalFreight() | yuan }}</span>
+        </p>
+      </div>
+    </div>
+    <v-button (click)="pay()" width="6rem">付款</v-button>
+  </v-footer>
+  <v-header title="我的订单">
+    <v-btn class="left" v-back icon="back"></v-btn>
+    <v-btn class="right" v-home icon="home"></v-btn>
+  </v-header>
+  <v-content
+      infinite-scroll
+      [scrollWindow]="false"
+      [infiniteScrollDistance]="1.5"
+      [infiniteScrollThrottle]="10"
+      (scrolled)="getOrderList()">
+    <div class="order-cont">
+      <div class="order">
+        <ul class="order-list">
+          <li *ngFor="let order of orders; let i = index">
+            <order [order]="order" [index]="i" [canCheck]="state=='unpay'"></order>
+          </li>
+       </ul>
+      </div>
+    </div>
+    <v-loading-box *ngIf="loading"></v-loading-box>
+    <v-empty-page title="您还没有相关的订单" *ngIf="!orders.length && !loading"></v-empty-page>
+  </v-content>
+  <div class="nav-tab-top">
+    <ul>
+      <li [routerLink]="['/order/list/all']" routerLinkActive="active">全部</li>
+      <li [routerLink]="['/order/list/unpay']" routerLinkActive="active">待付款</li>
+      <li [routerLink]="['/order/list/warehouse']" routerLinkActive="active">待发货</li>
+      <li [routerLink]="['/order/list/delivered']" routerLinkActive="active">已发货</li>
+      <li [routerLink]="['/order/list/error']" routerLinkActive="active">异常</li>
+      <li [routerLink]="['/order/list/closed']" routerLinkActive="active">已关闭</li>
+    </ul>
+  </div>
+  <v-float-btn icon="xiazai"  *ngIf="state=='unpay'" [routerLink]="['/order/sync']"></v-float-btn>
+</v-page>

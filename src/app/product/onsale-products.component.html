@@ -1,0 +1,27 @@
+<v-page [class.hidden]="state!='list'">
+  <v-footer>
+    <v-item [routerLink]="['/product/home/list']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" label="找货源" icon="huoyuan"></v-item>
+    <v-item [routerLink]="['/product/onsale/list']" routerLinkActive="active" label="已代理" icon="daili"></v-item>
+    <v-item [routerLink]="['/product/published']" routerLinkActive="active" label="去销售" icon="shangjia" ></v-item>
+  </v-footer>
+  <v-header>
+    <v-btn class="left" v-back icon="back"></v-btn>
+    <div class="searchinput">
+      <input type="text" autocomplete="off" placeholder="搜索商品/种类/编码" v-debounce [delay]="2000" (valueChanged)="search()">
+      <i class="iconfont icon-search" ></i>
+    </div>
+  </v-header>
+  <v-content
+      infinite-scroll
+      [scrollWindow]="false"
+      [infiniteScrollDistance]="1.5"
+      [infiniteScrollThrottle]="10"
+      (scrolled)="getProducts()">
+    <product-list-item *ngFor="let product of products" [product]="product" (open)="showProduct(product.hmbspucode)"></product-list-item>
+    <v-loading-box *ngIf="loading"></v-loading-box>
+    <v-empty-page title="您还没有相关的产品" *ngIf="!products.length && !loading"></v-empty-page>
+  </v-content>
+</v-page>
+<product-detail [product]="product" [class.hidden]="state!='detail'" (select)="onSelect($event)" (publish)="showStores($event)"></product-detail>
+<product-select-store [stores]="productService.getUnpublishStores(product)" [class.hidden]="state!='stores'" (select)="showPublish($event)"></product-select-store>
+<product-publish [product]="publishProduct" [store]="publishStore" [class.hidden]="state!='publish'" (submit)="submit($event)"></product-publish>

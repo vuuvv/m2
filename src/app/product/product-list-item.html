@@ -1,0 +1,27 @@
+<div class="item">
+  <a (click)="open()" class="item-url">
+    <div class="pic-wrapper">
+      <img alt="" class="img" src="{{ firstImage }}">
+    </div>
+    <div class="desc-wrapper">
+      <div class="text-wrapper">
+        <div class="title ">
+          {{ product.item_name }}
+        </div>
+        <div class="recommend">
+          <span class="reason">{{ product.item_name }}</span>
+        </div>
+      </div>
+      <div class="price-wrapper">
+        <span class="price">{{ product.balancePrice | yuan }}</span>
+      </div>
+    </div>
+  </a>
+  <div class="action-wrapper">
+    <span class="fav-btn" (click)="select()" [class.selected]="selected">
+      <span class="iconfont" [class.icon-xuanshou]="selected" [class.icon-weixuanshou]="!selected"></span>
+      <span class="fav-num" *ngIf="product.selectNum">{{ product.selectNum }}</span>
+      <span class="fav-txt" *ngIf="product.selectNum">人选售</span>
+    </span>
+  </div>
+</div>

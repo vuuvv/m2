@@ -3,7 +3,7 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
-describe('AppComponent', () => {
+describe('App: Mobilev3', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
